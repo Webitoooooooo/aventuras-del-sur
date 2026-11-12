@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h3>Panel de Control</h3>
+        <p class="text-muted">Bienvenido, <strong>{{ user.username }}</strong>. Tu perfil activo es: <span class="badge bg-success">{{ rol }}</span></p>
+        <hr>
+        {% if rol == 'ADMIN' %}
+            <div class="row text-center">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <h2>{{ total_exp }}</h2>
+                        <p class="mb-0">Experiencias Registradas</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <h2>{{ total_res }}</h2>
+                        <p class="mb-0">Reservas Totales</p>
+                    </div>
+                </div>
+            </div>
+        {% elif rol == 'GUIA' %}
+            <p>Tienes <strong>{{ mis_exp }}</strong> experiencias asignadas a tu autoría.</p>
+            <a href="{% url 'lista_experiencias' %}" class="btn btn-success">Gestionar mis experiencias</a>
+        {% else %}
+            <p>Tienes <strong>{{ mis_res }}</strong> reservas activas en tu historial.</p>
+            <a href="{% url 'lista_experiencias' %}" class="btn btn-success">Ver catálogo para reservar</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

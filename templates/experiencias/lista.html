@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Listado de Experiencias</h4>
+    {% if rol == 'ADMIN' or rol == 'GUIA' %}
+        <a href="{% url 'crear_experiencia' %}" class="btn btn-success">+ Nueva Experiencia</a>
+    {% endif %}
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-striped tabla-datos">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Categoría</th>
+                    <th>Precio</th>
+                    <th>Cupos</th>
+                    <th>Fecha y Hora</th>
+                    <th>Guía / Creador</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exp in experiencias %}
+                <tr>
+                    <td>{{ exp.titulo }}</td>
+                    <td>{{ exp.categoria.nombre }}</td>
+                    <td>${{ exp.precio }}</td>
+                    <td>{{ exp.cupo_maximo }}</td>
+                    <td>{{ exp.fecha_hora|date:"d/m/Y H:i" }}</td>
+                    <td>{{ exp.creador.username }}</td>
+                    <td>
+                        {% if rol == 'ADMIN' or rol == 'GUIA' %}
+                            <a href="{% url 'editar_experiencia' exp.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                        {% endif %}
+                        {% if rol == 'ADMIN' %}
+                            <a href="{% url 'eliminar_experiencia' exp.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar experiencia?')">Eliminar</a>
+                        {% endif %}
+                        {% if rol == 'TURISTA' %}
+                            <a href="{% url 'inscribir_experiencia' exp.pk %}" class="btn btn-sm btn-success">Inscribirme</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

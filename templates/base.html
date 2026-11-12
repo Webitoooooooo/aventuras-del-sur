@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aventuras del Sur</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success px-4 shadow-sm">
+    <a class="navbar-brand fw-bold" href="{% url 'home' %}">Aventuras del Sur</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Panel</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'lista_experiencias' %}">Experiencias</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'mis_reservas' %}">Reservas</a></li>
+                {% if request.session.rol == 'ADMIN' %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_categorias' %}">Categorías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'lista_usuarios' %}">Usuarios</a></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+        <div class="d-flex text-white align-items-center gap-3">
+            {% if user.is_authenticated %}
+                <span class="badge bg-dark">{{ user.username }} - {{ request.session.rol }}</span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm">Salir</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-light btn-sm">Ingresar</a>
+                <a href="{% url 'registro' %}" class="btn btn-outline-light btn-sm">Registrarse</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% for msg in messages %}
+        <div class="alert alert-info alert-dismissible fade show">
+            {{ msg }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.tabla-datos').DataTable({
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json' }
+        });
+    });
+</script>
+</body>
+</html>s

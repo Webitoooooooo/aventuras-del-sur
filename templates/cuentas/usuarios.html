@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4 class="mb-3">Gestión de Usuarios y Roles</h4>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-striped tabla-datos">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Correo</th>
+                    <th>Rol Actual</th>
+                    <th>Cambiar Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in perfiles %}
+                <tr>
+                    <td>{{ p.user.username }}</td>
+                    <td>{{ p.user.email }}</td>
+                    <td><span class="badge bg-secondary">{{ p.get_rol_display }}</span></td>
+                    <td>
+                        <form method="post" class="d-flex gap-2">
+                            {% csrf_token %}
+                            <input type="hidden" name="perfil_id" value="{{ p.id }}">
+                            <select name="rol" class="form-select form-select-sm" style="width: 170px;">
+                                <option value="ADMIN" {% if p.rol == 'ADMIN' %}selected{% endif %}>Administrador</option>
+                                <option value="GUIA" {% if p.rol == 'GUIA' %}selected{% endif %}>Guía/Operador</option>
+                                <option value="TURISTA" {% if p.rol == 'TURISTA' %}selected{% endif %}>Turista/Cliente</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">Guardar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

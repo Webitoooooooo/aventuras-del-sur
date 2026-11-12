@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4 class="mb-3">Historial de Reservas e Inscripciones</h4>
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-striped tabla-datos">
+            <thead>
+                <tr>
+                    <th>Turista</th>
+                    <th>Experiencia</th>
+                    <th>Fecha Inscripción</th>
+                    <th>Estado de Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in reservas %}
+                <tr>
+                    <td>{{ r.turista.username }}</td>
+                    <td>{{ r.experiencia.titulo }}</td>
+                    <td>{{ r.fecha_inscripcion|date:"d/m/Y H:i" }}</td>
+                    <td><span class="badge bg-info text-dark">{{ r.get_estado_pago_display }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
